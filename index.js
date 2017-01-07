@@ -3,9 +3,6 @@ var app = express();
 var path = require('path');
 
 app.get('/', function(req, res) {
-    // if (!env) {
-    //     throw new Error("No environment set.");
-    // }
     console.log(process.env.CYCLE_LOCATION_CITY.toLowerCase());
     switch (process.env.CYCLE_LOCATION_CITY.toLowerCase()) {
         case "amsterdam":
@@ -23,5 +20,3 @@ app.get('/', function(req, res) {
 app.use('/css', express.static(path.join(__dirname, 'css')))
 
 app.listen(80);
-
-console.log("LISTENING");
