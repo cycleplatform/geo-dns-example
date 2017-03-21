@@ -7,12 +7,12 @@ RUN mkdir /tls
 # Cache node_modules
 WORKDIR /data
 COPY ./package.json /data/
-RUN ["npm", "install"]
+RUN ["yarn", "install"]
 
 COPY . /data
 
 EXPOSE 80 443
 
 
-ENTRYPOINT ["npm"]
+ENTRYPOINT ["yarn"]
 CMD ["start"]
