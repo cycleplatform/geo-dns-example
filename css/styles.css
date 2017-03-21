@@ -1,0 +1,33 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.6rem;
+}
+
+.background {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.background.chicago {
+    background: url(http://naperdesign.com/wp-content/uploads/2010/02/838293_62585913.jpg) no-repeat center center fixed; 
+}
+
+.background.amsterdam {
+    background: url(https://static.pexels.com/photos/39844/pexels-photo-39844.jpeg) no-repeat center center fixed; 
+}
+
+.background.phoenix {
+    background: url(https://www.goodfreephotos.com/albums/united-states/arizona/phoenix/northern-skyline-downtown-phoenix-arizona.jpg) no-repeat center center fixed; 
+}
+
+.city-name {
+    position:absolute;
+    width:100%;
+    bottom:0;
+    text-align:center;
+    font-size: 10rem;
+    background-color: rgba(0, 0, 0, .6);
+    color: white;
+}
