@@ -59,6 +59,12 @@ const server = http.createServer(function (req, res) {
     res.end();
 }).listen(80);
 
-process.on('SIGINT', function() {  
-  process.exit();
+process.on('SIGINT', function () {
+    console.log("Captured SIGINT! Exiting.");
+    process.exit();
+});
+
+process.on('SIGTERM', function () {
+    console.log("Captured SIGTERM. Exiting.");
+    process.exit();
 });

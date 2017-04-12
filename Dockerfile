@@ -13,5 +13,5 @@ COPY . /data
 
 EXPOSE 80 443
 
-ENTRYPOINT ["yarn"]
-CMD ["start"]
+ENTRYPOINT ["node"]
+CMD ["index.js"]
