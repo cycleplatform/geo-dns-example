@@ -1,22 +1,70 @@
-var express = require('express');
-var app = express();
-var path = require('path');
+const express = require('express');
+const path = require('path');
+const spdy = require('spdy');
+const fs = require('fs');
 
-app.get('/', function(req, res) {
-    console.log(process.env.CYCLE_LOCATION_CITY.toLowerCase());
-    switch (process.env.CYCLE_LOCATION_CITY.toLowerCase()) {
+const app = express();
+
+const location = process.env.CYCLE_LOCATION_CITY.toLowerCase();
+const port = 443;
+
+app.use('/css', express.static(path.join(__dirname, 'css')));
+
+console.info("Location: ", location);
+
+app.get('*', function (req, res) {
+    switch (location) {
         case "amsterdam":
             res.sendFile(path.join(__dirname + '/templates/amsterdam.html'));
             break;
-        case "phoenix": 
+        case "phoenix":
             res.sendFile(path.join(__dirname + '/templates/phoenix.html'));
             break;
-        case "chicago": 
+        case "chicago":
         default:
             res.sendFile(path.join(__dirname + '/templates/chicago.html'));
     }
 });
 
-app.use('/css', express.static(path.join(__dirname, 'css')))
+const options = {
+    spdy: {
+        // plain: true,
+        // ssl: false
+    }
+};
 
-app.listen(80);
+try {
+    options.key = fs.readFileSync('/tls/current.key');
+    options.cert = fs.readFileSync('/tls/current.cert');
+    options.ca = fs.readFileSync('/tls/current.chain');
+} catch (e) {
+    console.error("No certs installed.")
+}
+
+spdy
+    .createServer(options, app)
+    .listen(port, (error) => {
+        if (error) {
+            console.error(error)
+            return process.exit(1)
+        } else {
+            console.log('Listening on port: ' + port)
+        }
+    });
+
+// Redirect to https
+const http = require('http');
+const server = http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
+
+process.on('SIGINT', function () {
+    console.log("Captured SIGINT! Exiting.");
+    process.exit();
+});
+
+process.on('SIGTERM', function () {
+    console.log("Captured SIGTERM. Exiting.");
+    process.exit();
+});
